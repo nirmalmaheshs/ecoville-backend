@@ -1,12 +1,13 @@
 {
   "service": {
-    "service": "tablestakes",
+    "service": "tablestakes-modify-chime",
     "serviceObject": {
-      "name": "tablestakes"
+      "name": "tablestakes-modify-chime"
     },
     "provider": {
       "name": "aws",
       "runtime": "nodejs14.x",
+      "stage": "dev",
       "apiGateway": {
         "minimumCompressionSize": 1024,
         "shouldStartNameWithService": true
@@ -23,10 +24,11 @@
       "environment": {
         "AWS_NODEJS_CONNECTION_REUSE_ENABLED": "1",
         "NODE_OPTIONS": "--enable-source-maps --stack-trace-limit=1000",
-        "NODE_ENV": "dev"
+        "EVENT_BUS_ARN": "arn:aws:events:us-east-1:877969058937:event-bus/ushg-hq-dev-app-events",
+        "NODE_ENV": "dev",
+        "EVENT_BUS_STACK_NAME": "tablestakes-platform"
       },
       "lambdaHashingVersion": "20201221",
-      "stage": "dev",
       "region": "us-east-1",
       "versionFunctions": true,
       "compiledCloudFormationTemplate": {
@@ -105,7 +107,7 @@
           "HelloLogGroup": {
             "Type": "AWS::Logs::LogGroup",
             "Properties": {
-              "LogGroupName": "/aws/lambda/tablestakes-dev-hello"
+              "LogGroupName": "/aws/lambda/tablestakes-modify-chime-dev-hello"
             }
           },
           "IamRoleLambdaExecution": {
@@ -133,7 +135,7 @@
                     "Fn::Join": [
                       "-",
                       [
-                        "tablestakes",
+                        "tablestakes-modify-chime",
                         "dev",
                         "lambda"
                       ]
@@ -151,7 +153,7 @@
                         ],
                         "Resource": [
                           {
-                            "Fn::Sub": "arn:${AWS::Partition}:logs:${AWS::Region}:${AWS::AccountId}:log-group:/aws/lambda/tablestakes-dev*:*"
+                            "Fn::Sub": "arn:${AWS::Partition}:logs:${AWS::Region}:${AWS::AccountId}:log-group:/aws/lambda/tablestakes-modify-chime-dev*:*"
                           }
                         ]
                       },
@@ -162,7 +164,7 @@
                         ],
                         "Resource": [
                           {
-                            "Fn::Sub": "arn:${AWS::Partition}:logs:${AWS::Region}:${AWS::AccountId}:log-group:/aws/lambda/tablestakes-dev*:*:*"
+                            "Fn::Sub": "arn:${AWS::Partition}:logs:${AWS::Region}:${AWS::AccountId}:log-group:/aws/lambda/tablestakes-modify-chime-dev*:*:*"
                           }
                         ]
                       },
@@ -185,7 +187,7 @@
                 "Fn::Join": [
                   "-",
                   [
-                    "tablestakes",
+                    "tablestakes-modify-chime",
                     "dev",
                     {
                       "Ref": "AWS::Region"
@@ -203,11 +205,11 @@
                 "S3Bucket": {
                   "Ref": "ServerlessDeploymentBucket"
                 },
-                "S3Key": "serverless/tablestakes/dev/1688386092348-2023-07-03T12:08:12.348Z/hello.zip"
+                "S3Key": "serverless/tablestakes-modify-chime/dev/1688461045913-2023-07-04T08:57:25.913Z/hello.zip"
               },
               "Handler": "services/modify-chime-meeting/app/functions/hello-world/handler.helloHandler",
               "Runtime": "nodejs14.x",
-              "FunctionName": "tablestakes-dev-hello",
+              "FunctionName": "tablestakes-modify-chime-dev-hello",
               "MemorySize": 1024,
               "Timeout": 6,
               "TracingConfig": {
@@ -217,7 +219,9 @@
                 "Variables": {
                   "AWS_NODEJS_CONNECTION_REUSE_ENABLED": "1",
                   "NODE_OPTIONS": "--enable-source-maps --stack-trace-limit=1000",
-                  "NODE_ENV": "dev"
+                  "EVENT_BUS_ARN": "arn:aws:events:us-east-1:877969058937:event-bus/ushg-hq-dev-app-events",
+                  "NODE_ENV": "dev",
+                  "EVENT_BUS_STACK_NAME": "tablestakes-platform"
                 }
               },
               "Role": {
@@ -231,20 +235,20 @@
               "HelloLogGroup"
             ]
           },
-          "HelloLambdaVersion7c9HRKBsSY7a84ArrEbKMAbi2GskJX2DI494Cr2ZqT0": {
+          "HelloLambdaVersionBpWcHuJyhvwZqpznnssCUOXqvqXijy08N7DUQBYsw": {
             "Type": "AWS::Lambda::Version",
             "DeletionPolicy": "Retain",
             "Properties": {
               "FunctionName": {
                 "Ref": "HelloLambdaFunction"
               },
-              "CodeSha256": "00p7G+bi9kExiLmydVO7oGFLnQZiXAfdLS7zc1yo4sc="
+              "CodeSha256": "+OqQ6MBw5MECsc20+jIeQ3E9jvNsQf4hGvA9uyRvO1Q="
             }
           },
           "ApiGatewayRestApi": {
             "Type": "AWS::ApiGateway::RestApi",
             "Properties": {
-              "Name": "tablestakes-dev",
+              "Name": "tablestakes-modify-chime-dev",
               "EndpointConfiguration": {
                 "Types": [
                   "EDGE"
@@ -309,52 +313,13 @@
                   ]
                 }
               },
-              "MethodResponses": [],
-              "RequestValidatorId": {
-                "Ref": "ApiGatewayTablestakesRequestValidator"
-              },
-              "RequestModels": {
-                "application/json": {
-                  "Ref": "ApiGatewayMethodHelloPostApplicationJsonModel"
-                }
-              }
+              "MethodResponses": []
             },
             "DependsOn": [
               "HelloLambdaPermissionApiGateway"
             ]
           },
-          "ApiGatewayTablestakesRequestValidator": {
-            "Type": "AWS::ApiGateway::RequestValidator",
-            "Properties": {
-              "RestApiId": {
-                "Ref": "ApiGatewayRestApi"
-              },
-              "ValidateRequestBody": true,
-              "ValidateRequestParameters": true,
-              "Name": "tablestakes-dev | Validate request body and querystring parameters"
-            }
-          },
-          "ApiGatewayMethodHelloPostApplicationJsonModel": {
-            "Type": "AWS::ApiGateway::Model",
-            "Properties": {
-              "RestApiId": {
-                "Ref": "ApiGatewayRestApi"
-              },
-              "ContentType": "application/json",
-              "Schema": {
-                "type": "object",
-                "properties": {
-                  "name": {
-                    "type": "string"
-                  }
-                },
-                "required": [
-                  "name"
-                ]
-              }
-            }
-          },
-          "ApiGatewayDeployment1688386088467": {
+          "ApiGatewayDeployment1688461042510": {
             "Type": "AWS::ApiGateway::Deployment",
             "Properties": {
               "RestApiId": {
@@ -406,7 +371,7 @@
           "ApiGatewayLogGroup": {
             "Type": "AWS::Logs::LogGroup",
             "Properties": {
-              "LogGroupName": "/aws/api-gateway/tablestakes-dev"
+              "LogGroupName": "/aws/api-gateway/tablestakes-modify-chime-dev"
             }
           },
           "CustomApiGatewayAccountCloudWatchRole": {
@@ -447,7 +412,7 @@
                       "-",
                       [
                         "dev",
-                        "tablestakes",
+                        "tablestakes-modify-chime",
                         "custom-resources-lambda"
                       ]
                     ]
@@ -512,9 +477,9 @@
                 "S3Bucket": {
                   "Ref": "ServerlessDeploymentBucket"
                 },
-                "S3Key": "serverless/tablestakes/dev/1688386092348-2023-07-03T12:08:12.348Z/custom-resources.zip"
+                "S3Key": "serverless/tablestakes-modify-chime/dev/1688461045913-2023-07-04T08:57:25.913Z/custom-resources.zip"
               },
-              "FunctionName": "tablestakes-dev-custom-resource-apigw-cw-role",
+              "FunctionName": "tablestakes-modify-chime-dev-custom-resource-apigw-cw-role",
               "Handler": "api-gateway-cloud-watch-role/handler.handler",
               "MemorySize": 1024,
               "Runtime": "nodejs16.x",
@@ -537,16 +502,16 @@
               "Ref": "ServerlessDeploymentBucket"
             },
             "Export": {
-              "Name": "sls-tablestakes-dev-ServerlessDeploymentBucketName"
+              "Name": "sls-tablestakes-modify-chime-dev-ServerlessDeploymentBucketName"
             }
           },
           "HelloLambdaFunctionQualifiedArn": {
             "Description": "Current Lambda function version",
             "Value": {
-              "Ref": "HelloLambdaVersion7c9HRKBsSY7a84ArrEbKMAbi2GskJX2DI494Cr2ZqT0"
+              "Ref": "HelloLambdaVersionBpWcHuJyhvwZqpznnssCUOXqvqXijy08N7DUQBYsw"
             },
             "Export": {
-              "Name": "sls-tablestakes-dev-HelloLambdaFunctionQualifiedArn"
+              "Name": "sls-tablestakes-modify-chime-dev-HelloLambdaFunctionQualifiedArn"
             }
           },
           "ServiceEndpoint": {
@@ -572,7 +537,7 @@
               ]
             },
             "Export": {
-              "Name": "sls-tablestakes-dev-ServiceEndpoint"
+              "Name": "sls-tablestakes-modify-chime-dev-ServiceEndpoint"
             }
           }
         }
@@ -684,7 +649,8 @@
       "serverless-esbuild",
       "serverless-deployment-bucket",
       "serverless-prune-plugin",
-      "serverless-dotenv-plugin"
+      "serverless-dotenv-plugin",
+      "serverless-offline"
     ],
     "pluginsData": {},
     "functions": {
@@ -695,18 +661,11 @@
             "http": {
               "method": "post",
               "path": "hello",
-              "request": {
-                "schemas": {
-                  "application/json": {
-                    "$ref": "$[\"service\"][\"provider\"][\"compiledCloudFormationTemplate\"][\"Resources\"][\"ApiGatewayMethodHelloPostApplicationJsonModel\"][\"Properties\"][\"Schema\"]"
-                  }
-                }
-              },
               "integration": "AWS_PROXY"
             }
           }
         ],
-        "name": "tablestakes-dev-hello",
+        "name": "tablestakes-modify-chime-dev-hello",
         "package": {
           "artifact": ".serverless/hello.zip"
         },
@@ -714,13 +673,13 @@
         "timeout": 6,
         "runtime": "nodejs14.x",
         "vpc": {},
-        "versionLogicalId": "HelloLambdaVersion7c9HRKBsSY7a84ArrEbKMAbi2GskJX2DI494Cr2ZqT0"
+        "versionLogicalId": "HelloLambdaVersionBpWcHuJyhvwZqpznnssCUOXqvqXijy08N7DUQBYsw"
       }
     },
     "configValidationMode": "warn",
     "serviceFilename": "modify-chime-meeting.serverless.ts",
     "initialServerlessConfig": {
-      "service": "tablestakes",
+      "service": "tablestakes-modify-chime",
       "frameworkVersion": "3",
       "plugins": {
         "$ref": "$[\"service\"][\"plugins\"]"
@@ -734,7 +693,7 @@
       },
       "package": {
         "individually": true,
-        "artifactsS3KeyDirname": "serverless/tablestakes/dev/code-artifacts"
+        "artifactsS3KeyDirname": "serverless/tablestakes-modify-chime/dev/code-artifacts"
       },
       "custom": {
         "$ref": "$[\"service\"][\"custom\"]"
@@ -745,7 +704,7 @@
   },
   "package": {
     "individually": true,
-    "artifactDirectoryName": "serverless/tablestakes/dev/1688386092348-2023-07-03T12:08:12.348Z",
+    "artifactDirectoryName": "serverless/tablestakes-modify-chime/dev/1688461045913-2023-07-04T08:57:25.913Z",
     "artifact": ""
   }
 }

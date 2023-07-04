@@ -2,8 +2,12 @@ import type {AWS} from '@serverless/typescript';
 
 import {hello} from './services/modify-chime-meeting/app';
 
-const serverlessConfiguration: AWS = {
-    service: 'tablestakes-modify-chime',
+type AWSCustom = AWS & {
+    resources: AWS["resources"] | string[];
+    provider: AWS["provider"] | (AWS["provider"] & AWS["provider"]["region"]);
+};
+const serverlessConfiguration: AWSCustom = {
+    service: 'tablestakes-platform',
     frameworkVersion: '3',
     plugins: [
         'serverless-esbuild',
@@ -33,7 +37,6 @@ const serverlessConfiguration: AWS = {
         environment: {
             AWS_NODEJS_CONNECTION_REUSE_ENABLED: '1',
             NODE_OPTIONS: '--enable-source-maps --stack-trace-limit=1000',
-            EVENT_BUS_ARN: "${cf:${env:EVENT_BUS_STACK_NAME}-${env:NODE_ENV}.EventBusArn}",
         },
         lambdaHashingVersion: '20201221',
     },
@@ -57,6 +60,9 @@ const serverlessConfiguration: AWS = {
             concurrency: 10,
         },
     },
+    resources: [
+        "${file(./services/platform/infra-assets/eventbus.yml)}",
+    ]
 };
 
 module.exports = serverlessConfiguration;

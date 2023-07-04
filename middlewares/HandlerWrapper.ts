@@ -4,6 +4,7 @@ import middyJsonBodyParser from "@middy/http-json-body-parser";
 import middySecretsManager from "@middy/secrets-manager";
 import middyCORS from "@middy/http-cors";
 import validator from "@middy/validator";
+import { customExceptionHandler } from "./exceptionHandler";
 import sqsJsonBodyParser from "@middy/sqs-json-body-parser";
 import {injectLambdaContext} from '@aws-lambda-powertools/logger';
 import {Logger} from "../libs/logger";
@@ -22,6 +23,7 @@ class HandlerWrapper {
   private _validatorUse = false;
 
   private _sqsBodyParser = false;
+  private _errorHandlerUse = true;
 
   /**
    * Enable Json Body Parser middy middleware for the current lambda handler wrapper instance
@@ -54,7 +56,7 @@ class HandlerWrapper {
    * @param opts
    * @returns
    */
-  schemaValidator(opts = {}) {
+  schemaValidator(opts = {inputSchema: null}) {
     this._validatorOpts = opts;
     this._validatorUse = true;
     return this;
@@ -62,6 +64,11 @@ class HandlerWrapper {
 
   sqsBodyParser() {
     this._sqsBodyParser = true;
+    return this;
+  }
+
+  CustomErrorHandler(enabled = true) {
+    this._errorHandlerUse = enabled;
     return this;
   }
 
@@ -78,6 +85,11 @@ class HandlerWrapper {
 
     if (this._useSecretsManager) {
       _middy.use(middySecretsManager(this._secretsManagerOpts));
+    }
+
+
+    if (this._errorHandlerUse) {
+      _middy.use(customExceptionHandler());
     }
 
     if (this._validatorUse) {

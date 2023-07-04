@@ -1,5 +1,3 @@
-import schema from './functions/hello-world/schema';
-
 export const hello = {
   handler: `services/modify-chime-meeting/app/functions/hello-world/handler.helloHandler`,
   events: [
@@ -7,11 +5,6 @@ export const hello = {
       http: {
         method: 'post',
         path: 'hello',
-        request: {
-          schemas: {
-            'application/json': schema
-          }
-        }
       }
     }
   ]

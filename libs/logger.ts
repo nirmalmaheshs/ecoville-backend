@@ -34,7 +34,6 @@ export class Logger {
                 "Authorization",
                 "Connection",
                 "AccessKey",
-                "dt-password",
                 "AccessToken",
                 "RefreshToken",
                 "IdToken",
