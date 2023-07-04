@@ -5,8 +5,8 @@ import middySecretsManager from "@middy/secrets-manager";
 import middyCORS from "@middy/http-cors";
 import validator from "@middy/validator";
 import sqsJsonBodyParser from "@middy/sqs-json-body-parser";
-import { injectLambdaContext } from '@aws-lambda-powertools/logger';
-import {logger} from "../libs/logger";
+import {injectLambdaContext} from '@aws-lambda-powertools/logger';
+import {Logger} from "../libs/logger";
 
 class HandlerWrapper {
   private _useJsonBodyParser = false;
@@ -22,8 +22,6 @@ class HandlerWrapper {
   private _validatorUse = false;
 
   private _sqsBodyParser = false;
-
-  private _logger = true;
 
   /**
    * Enable Json Body Parser middy middleware for the current lambda handler wrapper instance
@@ -68,7 +66,7 @@ class HandlerWrapper {
   }
 
   public get(f): MiddyfiedHandler {
-    const _middy = middy(f);
+    const _middy = middy(f).use(injectLambdaContext(Logger.getInstance()));
 
     if (this._useJsonBodyParser) {
       _middy.use(middyJsonBodyParser(this._jsonBodyParserOpts));
@@ -88,10 +86,6 @@ class HandlerWrapper {
 
     if (this._useCORS) {
       _middy.use(middyCORS(this._corsOpts));
-    }
-
-    if (this._logger) {
-        _middy.use(injectLambdaContext(logger));
     }
 
     return _middy;
