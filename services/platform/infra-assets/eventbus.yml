@@ -4,7 +4,7 @@ Resources:
   EventBusResource:
     Type: AWS::Events::EventBus
     Properties:
-      Name: "ushg-hq-${self:provider.stage}-app-events"
+      Name: "${self:service}-${self:provider.stage}-app-events"
 Outputs:
   EventBusName:
     Description: "Event Bus Name"

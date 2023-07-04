@@ -1,8 +1,8 @@
 {
   "service": {
-    "service": "tablestakes-modify-chime",
+    "service": "tablestakes-platform",
     "serviceObject": {
-      "name": "tablestakes-modify-chime"
+      "name": "tablestakes-platform"
     },
     "provider": {
       "name": "aws",
@@ -24,7 +24,6 @@
       "environment": {
         "AWS_NODEJS_CONNECTION_REUSE_ENABLED": "1",
         "NODE_OPTIONS": "--enable-source-maps --stack-trace-limit=1000",
-        "EVENT_BUS_ARN": "arn:aws:events:us-east-1:877969058937:event-bus/ushg-hq-dev-app-events",
         "NODE_ENV": "dev",
         "EVENT_BUS_STACK_NAME": "tablestakes-platform"
       },
@@ -33,7 +32,7 @@
       "versionFunctions": true,
       "compiledCloudFormationTemplate": {
         "AWSTemplateFormatVersion": "2010-09-09",
-        "Description": "The AWS CloudFormation template for this Serverless application",
+        "Description": "The AWS CloudFormation template for creating IAM Role on Lambda.",
         "Resources": {
           "ServerlessDeploymentBucket": {
             "Type": "AWS::S3::Bucket",
@@ -107,7 +106,7 @@
           "HelloLogGroup": {
             "Type": "AWS::Logs::LogGroup",
             "Properties": {
-              "LogGroupName": "/aws/lambda/tablestakes-modify-chime-dev-hello"
+              "LogGroupName": "/aws/lambda/tablestakes-platform-dev-hello"
             }
           },
           "IamRoleLambdaExecution": {
@@ -135,7 +134,7 @@
                     "Fn::Join": [
                       "-",
                       [
-                        "tablestakes-modify-chime",
+                        "tablestakes-platform",
                         "dev",
                         "lambda"
                       ]
@@ -153,7 +152,7 @@
                         ],
                         "Resource": [
                           {
-                            "Fn::Sub": "arn:${AWS::Partition}:logs:${AWS::Region}:${AWS::AccountId}:log-group:/aws/lambda/tablestakes-modify-chime-dev*:*"
+                            "Fn::Sub": "arn:${AWS::Partition}:logs:${AWS::Region}:${AWS::AccountId}:log-group:/aws/lambda/tablestakes-platform-dev*:*"
                           }
                         ]
                       },
@@ -164,7 +163,7 @@
                         ],
                         "Resource": [
                           {
-                            "Fn::Sub": "arn:${AWS::Partition}:logs:${AWS::Region}:${AWS::AccountId}:log-group:/aws/lambda/tablestakes-modify-chime-dev*:*:*"
+                            "Fn::Sub": "arn:${AWS::Partition}:logs:${AWS::Region}:${AWS::AccountId}:log-group:/aws/lambda/tablestakes-platform-dev*:*:*"
                           }
                         ]
                       },
@@ -187,7 +186,7 @@
                 "Fn::Join": [
                   "-",
                   [
-                    "tablestakes-modify-chime",
+                    "tablestakes-platform",
                     "dev",
                     {
                       "Ref": "AWS::Region"
@@ -205,11 +204,11 @@
                 "S3Bucket": {
                   "Ref": "ServerlessDeploymentBucket"
                 },
-                "S3Key": "serverless/tablestakes-modify-chime/dev/1688461045913-2023-07-04T08:57:25.913Z/hello.zip"
+                "S3Key": "serverless/tablestakes-platform/dev/1688462154967-2023-07-04T09:15:54.967Z/hello.zip"
               },
               "Handler": "services/modify-chime-meeting/app/functions/hello-world/handler.helloHandler",
               "Runtime": "nodejs14.x",
-              "FunctionName": "tablestakes-modify-chime-dev-hello",
+              "FunctionName": "tablestakes-platform-dev-hello",
               "MemorySize": 1024,
               "Timeout": 6,
               "TracingConfig": {
@@ -219,7 +218,6 @@
                 "Variables": {
                   "AWS_NODEJS_CONNECTION_REUSE_ENABLED": "1",
                   "NODE_OPTIONS": "--enable-source-maps --stack-trace-limit=1000",
-                  "EVENT_BUS_ARN": "arn:aws:events:us-east-1:877969058937:event-bus/ushg-hq-dev-app-events",
                   "NODE_ENV": "dev",
                   "EVENT_BUS_STACK_NAME": "tablestakes-platform"
                 }
@@ -235,7 +233,7 @@
               "HelloLogGroup"
             ]
           },
-          "HelloLambdaVersionBpWcHuJyhvwZqpznnssCUOXqvqXijy08N7DUQBYsw": {
+          "HelloLambdaVersionqRtuxWnve24NKqFWrn2EZxfKM7LfmtNYdpdz0wTI": {
             "Type": "AWS::Lambda::Version",
             "DeletionPolicy": "Retain",
             "Properties": {
@@ -248,7 +246,7 @@
           "ApiGatewayRestApi": {
             "Type": "AWS::ApiGateway::RestApi",
             "Properties": {
-              "Name": "tablestakes-modify-chime-dev",
+              "Name": "tablestakes-platform-dev",
               "EndpointConfiguration": {
                 "Types": [
                   "EDGE"
@@ -319,7 +317,7 @@
               "HelloLambdaPermissionApiGateway"
             ]
           },
-          "ApiGatewayDeployment1688461042510": {
+          "ApiGatewayDeployment1688462152804": {
             "Type": "AWS::ApiGateway::Deployment",
             "Properties": {
               "RestApiId": {
@@ -371,7 +369,7 @@
           "ApiGatewayLogGroup": {
             "Type": "AWS::Logs::LogGroup",
             "Properties": {
-              "LogGroupName": "/aws/api-gateway/tablestakes-modify-chime-dev"
+              "LogGroupName": "/aws/api-gateway/tablestakes-platform-dev"
             }
           },
           "CustomApiGatewayAccountCloudWatchRole": {
@@ -412,7 +410,7 @@
                       "-",
                       [
                         "dev",
-                        "tablestakes-modify-chime",
+                        "tablestakes-platform",
                         "custom-resources-lambda"
                       ]
                     ]
@@ -477,9 +475,9 @@
                 "S3Bucket": {
                   "Ref": "ServerlessDeploymentBucket"
                 },
-                "S3Key": "serverless/tablestakes-modify-chime/dev/1688461045913-2023-07-04T08:57:25.913Z/custom-resources.zip"
+                "S3Key": "serverless/tablestakes-platform/dev/1688462154967-2023-07-04T09:15:54.967Z/custom-resources.zip"
               },
-              "FunctionName": "tablestakes-modify-chime-dev-custom-resource-apigw-cw-role",
+              "FunctionName": "tablestakes-platform-dev-custom-resource-apigw-cw-role",
               "Handler": "api-gateway-cloud-watch-role/handler.handler",
               "MemorySize": 1024,
               "Runtime": "nodejs16.x",
@@ -494,6 +492,12 @@
             "DependsOn": [
               "IamRoleCustomResourcesLambdaExecution"
             ]
+          },
+          "EventBusResource": {
+            "Type": "AWS::Events::EventBus",
+            "Properties": {
+              "Name": "tablestakes-platform-dev-app-events"
+            }
           }
         },
         "Outputs": {
@@ -502,16 +506,16 @@
               "Ref": "ServerlessDeploymentBucket"
             },
             "Export": {
-              "Name": "sls-tablestakes-modify-chime-dev-ServerlessDeploymentBucketName"
+              "Name": "sls-tablestakes-platform-dev-ServerlessDeploymentBucketName"
             }
           },
           "HelloLambdaFunctionQualifiedArn": {
             "Description": "Current Lambda function version",
             "Value": {
-              "Ref": "HelloLambdaVersionBpWcHuJyhvwZqpznnssCUOXqvqXijy08N7DUQBYsw"
+              "Ref": "HelloLambdaVersionqRtuxWnve24NKqFWrn2EZxfKM7LfmtNYdpdz0wTI"
             },
             "Export": {
-              "Name": "sls-tablestakes-modify-chime-dev-HelloLambdaFunctionQualifiedArn"
+              "Name": "sls-tablestakes-platform-dev-HelloLambdaFunctionQualifiedArn"
             }
           },
           "ServiceEndpoint": {
@@ -537,7 +541,28 @@
               ]
             },
             "Export": {
-              "Name": "sls-tablestakes-modify-chime-dev-ServiceEndpoint"
+              "Name": "sls-tablestakes-platform-dev-ServiceEndpoint"
+            }
+          },
+          "EventBusName": {
+            "Description": "Event Bus Name",
+            "Value": {
+              "Ref": "EventBusResource"
+            },
+            "Export": {
+              "Name": "ushg-hq-event-bus-name"
+            }
+          },
+          "EventBusArn": {
+            "Description": "Event Bus Arn",
+            "Value": {
+              "Fn::GetAtt": [
+                "EventBusResource",
+                "Arn"
+              ]
+            },
+            "Export": {
+              "Name": "ushg-hq-event-bus-arn"
             }
           }
         }
@@ -665,7 +690,7 @@
             }
           }
         ],
-        "name": "tablestakes-modify-chime-dev-hello",
+        "name": "tablestakes-platform-dev-hello",
         "package": {
           "artifact": ".serverless/hello.zip"
         },
@@ -673,13 +698,48 @@
         "timeout": 6,
         "runtime": "nodejs14.x",
         "vpc": {},
-        "versionLogicalId": "HelloLambdaVersionBpWcHuJyhvwZqpznnssCUOXqvqXijy08N7DUQBYsw"
+        "versionLogicalId": "HelloLambdaVersionqRtuxWnve24NKqFWrn2EZxfKM7LfmtNYdpdz0wTI"
+      }
+    },
+    "resources": {
+      "AWSTemplateFormatVersion": "2010-09-09",
+      "Description": "The AWS CloudFormation template for creating IAM Role on Lambda.",
+      "Resources": {
+        "EventBusResource": {
+          "Type": "AWS::Events::EventBus",
+          "Properties": {
+            "Name": "tablestakes-platform-dev-app-events"
+          }
+        }
+      },
+      "Outputs": {
+        "EventBusName": {
+          "Description": "Event Bus Name",
+          "Value": {
+            "Ref": "EventBusResource"
+          },
+          "Export": {
+            "Name": "ushg-hq-event-bus-name"
+          }
+        },
+        "EventBusArn": {
+          "Description": "Event Bus Arn",
+          "Value": {
+            "Fn::GetAtt": [
+              "EventBusResource",
+              "Arn"
+            ]
+          },
+          "Export": {
+            "Name": "ushg-hq-event-bus-arn"
+          }
+        }
       }
     },
     "configValidationMode": "warn",
-    "serviceFilename": "modify-chime-meeting.serverless.ts",
+    "serviceFilename": "platform.serverless.ts",
     "initialServerlessConfig": {
-      "service": "tablestakes-modify-chime",
+      "service": "tablestakes-platform",
       "frameworkVersion": "3",
       "plugins": {
         "$ref": "$[\"service\"][\"plugins\"]"
@@ -693,10 +753,13 @@
       },
       "package": {
         "individually": true,
-        "artifactsS3KeyDirname": "serverless/tablestakes-modify-chime/dev/code-artifacts"
+        "artifactsS3KeyDirname": "serverless/tablestakes-platform/dev/code-artifacts"
       },
       "custom": {
         "$ref": "$[\"service\"][\"custom\"]"
+      },
+      "resources": {
+        "$ref": "$[\"service\"][\"resources\"]"
       }
     },
     "layers": {},
@@ -704,7 +767,7 @@
   },
   "package": {
     "individually": true,
-    "artifactDirectoryName": "serverless/tablestakes-modify-chime/dev/1688461045913-2023-07-04T08:57:25.913Z",
+    "artifactDirectoryName": "serverless/tablestakes-platform/dev/1688462154967-2023-07-04T09:15:54.967Z",
     "artifact": ""
   }
 }
