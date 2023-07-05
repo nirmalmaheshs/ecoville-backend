@@ -1,5 +1,19 @@
-#!/bin/bash
+version: 0.1
+phases:
+  install:
+    runtime-versions:
+      nodejs: 14
+    commands:
+      - npm i -g serverless
+      - npm i
+      - chmod +x deploy.sh
+  build:
+    commands:
+      - ./deploy.sh
+  post_build:
+    commands:
+      - echo Build completed on `date`
 
-npm install
-
-npm run deploy-modify-chime-meeting:dev
+cache:
+  paths:
+    - node_modules/**/*
