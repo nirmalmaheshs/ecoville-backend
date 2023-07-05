@@ -1,5 +1,6 @@
 #!/bin/bash
 
+
 npm install
 
 npm run deploy-platform:dev
