@@ -5,7 +5,8 @@
   "main": "modify-chime-meeting.serverless.ts",
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1",
-    "modify-chime-meeting": "serverless offline --stage dev --config modify-chime-meeting.serverless.ts"
+    "modify-chime-meeting": "serverless offline --stage dev --config modify-chime-meeting.serverless.ts",
+    "deploy-modify-chime-meeting:dev": "serverless deploy --stage dev --config modify-chime-meeting.serverless.ts"
   },
   "engines": {
     "node": ">=14.15.0"
