@@ -8,14 +8,14 @@ const logger = Logger.getInstance();
 const responseData: any = {};
 const lambdaHandler = async (_event, _context): Promise<any> => {
     logger.info('This is an INFO log with some context');
-    console.log("REQUEST RECEIVED:\n" + JSON.stringify(_event));
-    console.log("Context:\n" + JSON.stringify(_context));
-    console.log("S3 Buckket Name: ", _event.ResourceProperties.BucketName);
+    logger.info("REQUEST RECEIVED:\n" + JSON.stringify(_event));
+    logger.info("Context:\n" + JSON.stringify(_context));
+    logger.info("S3 Buckket Name: ", _event.ResourceProperties.BucketName);
     const bucketName = _event.ResourceProperties.BucketName;
     const eventType = _event.RequestType;
     try {
         if (eventType === "Create") {
-            console.log("Creating the bucket..");
+            logger.info("Creating the bucket..");
             const createBucketResponse = await s3Client.createBucket({
                 Bucket: bucketName
             }).promise();
@@ -27,7 +27,7 @@ const lambdaHandler = async (_event, _context): Promise<any> => {
             }).promise();
         }
     } catch (error) {
-        console.log(error);
+        logger.info(error);
         await sendResponse(_event, _context, "FAILED", responseData);
     }
 };
@@ -47,7 +47,7 @@ function sendResponse(event, context, responseStatus, responseData) {
             LogicalResourceId: event.LogicalResourceId,
             Data: responseData,
         });
-        console.log("RESPONSE BODY:\n", responseBody);
+        logger.info("RESPONSE BODY:\n" + JSON.stringify(responseBody));
 
         var https = require("https");
         var url = require("url");
@@ -64,18 +64,18 @@ function sendResponse(event, context, responseStatus, responseData) {
             },
         };
 
-        console.log("SENDING RESPONSE...\n");
-        console.log("Request Options: ", options);
+        logger.info("SENDING RESPONSE...\n");
+        logger.info("Request Options: ", options);
         var request = https.request(options, function (response) {
-            console.log("STATUS: " + response.statusCode);
-            console.log("HEADERS: " + JSON.stringify(response.headers));
-            console.log("Resolving from the sendResponse");
+            logger.info("STATUS: " + response.statusCode);
+            logger.info("HEADERS: " + JSON.stringify(response.headers));
+            logger.info("Resolving from the sendResponse");
             context.done();
             resolve(true);
         });
 
         request.on("error", function (error) {
-            console.log("sendResponse Error:" + error);
+            logger.info("sendResponse Error:" + error);
             // Tell AWS Lambda that the function execution is done
             context.done();
             reject(error);

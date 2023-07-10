@@ -6,7 +6,7 @@ type AWSCustom = AWS & {
     provider: AWS["provider"] | (AWS["provider"] & AWS["provider"]["region"]);
 };
 const serverlessConfiguration: AWSCustom = {
-    service: 'modify-chime',
+    service: 'modify-chime-meeting',
     frameworkVersion: '3',
     plugins: [
         'serverless-esbuild',
