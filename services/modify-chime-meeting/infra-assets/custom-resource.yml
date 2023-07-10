@@ -1,0 +1,16 @@
+AWSTemplateFormatVersion: "2010-09-09"
+Description: The AWS CloudFormation template for creating cloud search.
+Resources:
+
+  S3BucketCustomResouce:
+    DependsOn:
+      S3CustomResourceLambdaFunction
+    Type: Custom::S3Bucket
+    Version: "1.0"
+    Properties:
+      ServiceToken:
+        Fn::GetAtt:
+          - S3CustomResourceLambdaFunction
+          - Arn
+      BucketName: my-custom-resouce-bucket-9876335
+      Version: "1.0"

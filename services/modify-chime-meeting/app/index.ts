@@ -9,3 +9,7 @@ export const hello = {
     }
   ]
 }
+
+export const s3CustomResource = {
+  handler: `services/modify-chime-meeting/app/functions/custom-resource/handler.customResouceHandler`,
+}

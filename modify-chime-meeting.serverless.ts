@@ -1,9 +1,12 @@
 import type {AWS} from '@serverless/typescript';
 
-import {hello} from './services/modify-chime-meeting/app';
-
-const serverlessConfiguration: AWS = {
-    service: 'tablestakes-modify-chime',
+import {hello, s3CustomResource} from './services/modify-chime-meeting/app';
+type AWSCustom = AWS & {
+    resources: AWS["resources"] | string[];
+    provider: AWS["provider"] | (AWS["provider"] & AWS["provider"]["region"]);
+};
+const serverlessConfiguration: AWSCustom = {
+    service: 'modify-chime',
     frameworkVersion: '3',
     plugins: [
         'serverless-esbuild',
@@ -17,6 +20,8 @@ const serverlessConfiguration: AWS = {
         name: 'aws',
         runtime: 'nodejs14.x',
         stage: "${opt:stage, 'dev'}",
+        region: 'us-east-1',
+        role: "DefaultLambdaIAMRole",
         apiGateway: {
             minimumCompressionSize: 1024,
             shouldStartNameWithService: true,
@@ -38,7 +43,7 @@ const serverlessConfiguration: AWS = {
         lambdaHashingVersion: '20201221',
     },
     // import the function via paths
-    functions: {hello},
+    functions: {hello, s3CustomResource},
     package: {individually: true},
     custom: {
         prune: {
@@ -57,6 +62,10 @@ const serverlessConfiguration: AWS = {
             concurrency: 10,
         },
     },
+    resources: [
+        "${file(./services/modify-chime-meeting/infra-assets/custom-resource.yml)}",
+        "${file(./services/modify-chime-meeting/infra-assets/lambda-role.yml)}",
+    ]
 };
 
 module.exports = serverlessConfiguration;
