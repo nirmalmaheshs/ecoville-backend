@@ -4,10 +4,10 @@
   "description": "Serverless aws-nodejs-typescript template",
   "main": "modify-chime-meeting.serverless.ts",
   "scripts": {
-    "test": "echo \"Error: no test specified\" && exit 1",
     "modify-chime-meeting": "serverless offline --stage dev --config modify-chime-meeting.serverless.ts",
     "deploy-modify-chime-meeting:dev": "serverless deploy --stage dev --config modify-chime-meeting.serverless.ts",
-    "deploy-platform:dev": "serverless deploy --stage dev --config platform.serverless.ts"
+    "deploy-platform:dev": "serverless deploy --stage dev --config platform.serverless.ts",
+    "test": "jest"
   },
   "engines": {
     "node": ">=14.15.0"
@@ -24,9 +24,12 @@
     "@middy/secrets-manager": "^3.3.4",
     "@middy/sqs-json-body-parser": "^2.5.7",
     "@middy/validator": "^2.5.7",
+    "@types/jest": "^29.5.3",
     "aws-xray-sdk": "^3.5.0",
     "http-errors": "^2.0.0",
-    "serverless-deployment-bucket": "^1.6.0"
+    "jest": "^29.6.1",
+    "serverless-deployment-bucket": "^1.6.0",
+    "ts-jest": "^29.1.1"
   },
   "devDependencies": {
     "@serverless/typescript": "^2.23.0",
