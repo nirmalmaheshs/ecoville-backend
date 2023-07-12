@@ -7,7 +7,9 @@ import validator from "@middy/validator";
 import { customExceptionHandler } from "./exceptionHandler";
 import sqsJsonBodyParser from "@middy/sqs-json-body-parser";
 import {injectLambdaContext} from '@aws-lambda-powertools/logger';
+import {captureLambdaHandler} from '@aws-lambda-powertools/tracer';
 import {Logger} from "../libs/logger";
+import { tracer } from "../libs/tracer";
 
 class HandlerWrapper {
   private _useJsonBodyParser = false;
@@ -73,7 +75,7 @@ class HandlerWrapper {
   }
 
   public get(f): MiddyfiedHandler {
-    const _middy = middy(f).use(injectLambdaContext(Logger.getInstance()));
+    const _middy = middy(f).use(injectLambdaContext(Logger.getInstance())).use(captureLambdaHandler(tracer));
 
     if (this._useJsonBodyParser) {
       _middy.use(middyJsonBodyParser(this._jsonBodyParserOpts));
