@@ -13,10 +13,11 @@ Resources:
               Service:
                 - lambda.amazonaws.com
             Action: sts:AssumeRole
-          
+
       ManagedPolicyArns:
         - arn:aws:iam::aws:policy/service-role/AWSLambdaRole
         - arn:aws:iam::aws:policy/service-role/AWSLambdaVPCAccessExecutionRole
+        - arn:aws:iam::aws:policy/AWSXRayDaemonWriteAccess
       Policies:
         - PolicyName: ${self:service}-${self:provider.stage}-${self:provider.region}-policy
           PolicyDocument:
@@ -30,11 +31,6 @@ Resources:
                   - ses:SendEmail
                   - ses:SendRawEmail
                   - states:StartExecution
-                Resource: "*"
-              - Effect: Allow
-                Action: # X Ray Tracing Enable - Detailed AWS resource tracing
-                  - xray:PutTelemetryRecords
-                  - xray:PutTraceSegments
                 Resource: "*"
               - Effect: Allow
                 Action:

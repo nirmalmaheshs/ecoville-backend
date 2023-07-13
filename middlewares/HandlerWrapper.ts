@@ -75,7 +75,7 @@ class HandlerWrapper {
   }
 
   public get(f): MiddyfiedHandler {
-    const _middy = middy(f).use(injectLambdaContext(Logger.getInstance())).use(captureLambdaHandler(tracer));
+    const _middy = middy(f).use(injectLambdaContext(Logger.getInstance()));
 
     if (this._useJsonBodyParser) {
       _middy.use(middyJsonBodyParser(this._jsonBodyParserOpts));
@@ -102,7 +102,7 @@ class HandlerWrapper {
       _middy.use(middyCORS(this._corsOpts));
     }
 
-    return _middy;
+    return _middy.use(captureLambdaHandler(tracer, {captureResponse: false}));
   }
 }
 

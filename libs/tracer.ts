@@ -1,5 +1,5 @@
 import {Tracer} from "@aws-lambda-powertools/tracer";
 const tracer = new Tracer();
-import AWS from 'aws-sdk';
-tracer.captureAWSClient(AWS);
+import * as AWS from 'aws-sdk';
+tracer.captureAWS(AWS);
 export {tracer};

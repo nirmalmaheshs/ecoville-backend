@@ -27,7 +27,7 @@ const serverlessConfiguration: AWSCustom = {
             shouldStartNameWithService: true,
         },
         tracing: {
-            lambda: true,
+            lambda: 'Active',
             apiGateway: true,
         },
         logs: {
