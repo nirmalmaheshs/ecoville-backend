@@ -2,11 +2,10 @@
   "name": "tablestakes",
   "version": "1.0.0",
   "description": "Serverless aws-nodejs-typescript template",
-  "main": "modify-chime-meeting.serverless.ts",
+  "main": "ecoville.serverless.ts",
   "scripts": {
-    "modify-chime-meeting": "serverless offline --stage dev --config modify-chime-meeting.serverless.ts",
-    "deploy-modify-chime-meeting:dev": "serverless deploy --stage dev --config modify-chime-meeting.serverless.ts",
-    "deploy-platform:dev": "serverless deploy --stage dev --config platform.serverless.ts",
+    "ecoville": "serverless offline --stage dev --config ecoville.serverless.ts",
+    "deploy-ecoville:dev": "serverless deploy --stage dev --config ecoville.serverless.ts",
     "test": "jest"
   },
   "engines": {

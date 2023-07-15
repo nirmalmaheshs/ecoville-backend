@@ -1,12 +1,12 @@
 import type {AWS} from '@serverless/typescript';
 
-import {hello, s3CustomResource} from './services/modify-chime-meeting/app';
+import {hello, s3CustomResource} from './services/ecoville/app';
 type AWSCustom = AWS & {
     resources: AWS["resources"] | string[];
     provider: AWS["provider"] | (AWS["provider"] & AWS["provider"]["region"]);
 };
 const serverlessConfiguration: AWSCustom = {
-    service: 'modify-chime-meeting',
+    service: 'ecoville',
     frameworkVersion: '3',
     plugins: [
         'serverless-esbuild',
@@ -38,7 +38,6 @@ const serverlessConfiguration: AWSCustom = {
         environment: {
             AWS_NODEJS_CONNECTION_REUSE_ENABLED: '1',
             NODE_OPTIONS: '--enable-source-maps --stack-trace-limit=1000',
-            EVENT_BUS_ARN: "${cf:${env:EVENT_BUS_STACK_NAME}-${env:NODE_ENV}.EventBusArn}",
         },
         lambdaHashingVersion: '20201221',
     },
@@ -63,8 +62,7 @@ const serverlessConfiguration: AWSCustom = {
         },
     },
     resources: [
-        "${file(./services/modify-chime-meeting/infra-assets/custom-resource.yml)}",
-        "${file(./services/modify-chime-meeting/infra-assets/lambda-role.yml)}",
+        "${file(./services/ecoville/infra-assets/lambda-role.yml)}",
     ]
 };
 
