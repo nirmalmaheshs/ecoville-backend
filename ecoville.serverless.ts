@@ -60,9 +60,13 @@ const serverlessConfiguration: AWSCustom = {
             platform: 'node',
             concurrency: 10,
         },
+        authorizerId: {
+            "Ref": "ApiGatewayAuthorizer"
+        }
     },
     resources: [
         "${file(./services/ecoville/infra-assets/lambda-role.yml)}",
+        "${file(./services/ecoville/infra-assets/cognito.yml)}",
     ]
 };
 

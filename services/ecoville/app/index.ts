@@ -5,6 +5,10 @@ export const hello = {
       http: {
         method: 'post',
         path: 'hello',
+        authorizer: {
+          type: 'COGNITO_USER_POOLS',
+          authorizerId: "${self:custom.authorizerId}"
+        },
       }
     }
   ]
