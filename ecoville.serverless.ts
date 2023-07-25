@@ -1,6 +1,6 @@
 import type {AWS} from '@serverless/typescript';
 
-import {hello} from './services/ecoville/app';
+import {hello,getJobsHandler} from './services/ecoville/app';
 type AWSCustom = AWS & {
     resources: AWS["resources"] | string[];
     provider: AWS["provider"] | (AWS["provider"] & AWS["provider"]["region"]);
@@ -42,7 +42,7 @@ const serverlessConfiguration: AWSCustom = {
         lambdaHashingVersion: '20201221',
     },
     // import the function via paths
-    functions: {hello},
+    functions: {hello,getJobsHandler},
     package: {individually: true},
     custom: {
         prune: {

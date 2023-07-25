@@ -14,6 +14,14 @@ export const hello = {
   ]
 }
 
-export const s3CustomResource = {
-  handler: `services/ecoville/app/functions/custom-resource/handler.customResouceHandler`,
+export const getJobsHandler = {
+  handler: `services/ecoville/app/functions/get-jobs/handler.getJobsHandler`,
+  events: [
+    {
+      http: {
+        method: 'get',
+        path: 'jobs',
+      }
+    }
+  ]
 }

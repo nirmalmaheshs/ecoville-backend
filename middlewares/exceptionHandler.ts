@@ -103,9 +103,9 @@ export const customExceptionHandler = () => {
       console.log("Check Flag: ",request.error);
     }
     if (!isValidJsonString(request.error.error)) {
-      console.log("Check Flag3 : ",request.error.error);
-      request.error.statusCode = request.error.error.statusCode;
-      request.error.message = JSON.stringify(request.error.error);
+      console.log("Check Flag3 : ",request.error);
+      // request.error.statusCode = request.error.statusCode;
+      request.error.message = JSON.stringify({message: request.error});
     } else {
       console.log("Check Flag2 : ",request.error.message);
       const errorPayload = JSON.parse(request.error.message);
