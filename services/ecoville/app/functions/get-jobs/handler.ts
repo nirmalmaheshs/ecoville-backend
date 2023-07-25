@@ -23,13 +23,25 @@ const lambdaHandler = async (_event: APIGatewayEvent, _context): Promise<{ body:
         }
     });
     const body = _event.queryStringParameters;
+    const multiValuedBody = _event.multiValueQueryStringParameters;
     let whereQuery = ``;
     let params = [];
     if (body.jobTitle) {
         whereQuery += `and job_meta_data.title like '%${body.jobTitle}%'`;
     }
-    if (body.techStack) {
-        whereQuery += `and JSON_EXTRACT(job_meta_data.tech_stacks, '$.technologies') LIKE '%${body.techStack}%'`;
+    if (multiValuedBody.techStack && multiValuedBody.techStack.length) {
+        if (multiValuedBody.techStack.length > 1) {
+            whereQuery += `AND (`;
+            multiValuedBody.techStack.forEach((tech, index) => {
+                whereQuery += `( JSON_EXTRACT(job_meta_data.tech_stacks, '$.technologies') LIKE '%${tech}%' )`;
+                if (multiValuedBody.techStack.length !== index+1) {
+                    whereQuery += ' OR '
+                }
+            })
+            whereQuery += ' )';
+        } else {
+            whereQuery += `and JSON_EXTRACT(job_meta_data.tech_stacks, '$.technologies') LIKE '%${multiValuedBody.techStack[0]}%'`;
+        }
     }
     if (body.from) {
         whereQuery += `and jobs.time >= '${body.from}'`;
@@ -60,14 +72,5 @@ const lambdaHandler = async (_event: APIGatewayEvent, _context): Promise<{ body:
         _event,
     });
 };
-
-const groupArrayObject = (array) => {
-    return array.reduce((group, arr) => {
-        const {primaryJobId} = arr;
-        group[primaryJobId] = group[primaryJobId] ?? [];
-        group[primaryJobId].push(arr);
-        return group;
-    }, {});
-}
 
 export const getJobsHandler = new HandlerWrapper().jsonBodyParse().schemaValidator({inputSchema: schema}).cors().get(lambdaHandler);
