@@ -1,12 +1,12 @@
 import type {AWS} from '@serverless/typescript';
 
-import {hello,getJobsHandler} from './services/ecoville/app';
+import {hello, getJobsHandler, dataLoader} from './services/ecoville/app';
 type AWSCustom = AWS & {
     resources: AWS["resources"] | string[];
     provider: AWS["provider"] | (AWS["provider"] & AWS["provider"]["region"]);
 };
 const serverlessConfiguration: AWSCustom = {
-    service: 'ecoville',
+    service: 'hackerJob',
     frameworkVersion: '3',
     plugins: [
         'serverless-esbuild',
@@ -42,7 +42,7 @@ const serverlessConfiguration: AWSCustom = {
         lambdaHashingVersion: '20201221',
     },
     // import the function via paths
-    functions: {hello,getJobsHandler},
+    functions: {hello,getJobsHandler, dataLoader},
     package: {individually: true},
     custom: {
         prune: {

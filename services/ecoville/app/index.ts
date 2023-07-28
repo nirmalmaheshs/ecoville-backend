@@ -21,7 +21,21 @@ export const getJobsHandler = {
       http: {
         method: 'get',
         path: 'jobs',
-      }
+        cors: true
+      },
+    }
+  ]
+}
+
+export const dataLoader = {
+  handler: `services/ecoville/app/functions/data-loader/handler.dataLoaderHandler`,
+  events: [
+    {
+      http: {
+        method: 'get',
+        path: 'loader',
+        cors: true
+      },
     }
   ]
 }
