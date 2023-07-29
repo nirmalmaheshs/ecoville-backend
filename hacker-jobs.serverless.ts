@@ -1,6 +1,6 @@
 import type {AWS} from '@serverless/typescript';
 
-import {hello, getJobsHandler, dataLoader} from './services/ecoville/app';
+import {hello, getJobsHandler, dataLoader} from './services/hacker-jobs/app';
 type AWSCustom = AWS & {
     resources: AWS["resources"] | string[];
     provider: AWS["provider"] | (AWS["provider"] & AWS["provider"]["region"]);
@@ -65,8 +65,8 @@ const serverlessConfiguration: AWSCustom = {
         }
     },
     resources: [
-        "${file(./services/ecoville/infra-assets/lambda-role.yml)}",
-        "${file(./services/ecoville/infra-assets/cognito.yml)}",
+        "${file(./services/hacker-jobs/infra-assets/lambda-role.yml)}",
+        "${file(./services/hacker-jobs/infra-assets/cognito.yml)}",
     ]
 };
 

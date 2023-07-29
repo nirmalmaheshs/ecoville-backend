@@ -128,7 +128,7 @@ async function findHiringStory(startingPosition, endingPosition) {
     const records = await Promise.all(promises);
     const hiringPosts = [];
     records.forEach((item) => {
-        if (item.type === 'story' && item.by === 'whoishiring' && item.title.includes('Ask')) {
+        if (item.type === 'story' && item.by === 'whoishiring' && item.title.includes('Ask HN: Who is')) {
             hiringPosts.push(item);
         }
     });

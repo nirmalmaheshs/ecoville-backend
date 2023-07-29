@@ -3,4 +3,4 @@
 
 npm install
 
-npm run deploy-ecoville:dev
+npm run hacker-jobs:dev

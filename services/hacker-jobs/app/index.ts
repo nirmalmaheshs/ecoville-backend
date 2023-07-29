@@ -1,5 +1,5 @@
 export const hello = {
-  handler: `services/ecoville/app/functions/hello-world/handler.helloHandler`,
+  handler: `services/hacker-jobs/app/functions/hello-world/handler.helloHandler`,
   events: [
     {
       http: {
@@ -15,7 +15,7 @@ export const hello = {
 }
 
 export const getJobsHandler = {
-  handler: `services/ecoville/app/functions/get-jobs/handler.getJobsHandler`,
+  handler: `services/hacker-jobs/app/functions/get-jobs/handler.getJobsHandler`,
   events: [
     {
       http: {
@@ -28,7 +28,8 @@ export const getJobsHandler = {
 }
 
 export const dataLoader = {
-  handler: `services/ecoville/app/functions/data-loader/handler.dataLoaderHandler`,
+  handler: `services/hacker-jobs/app/functions/data-loader/handler.dataLoaderHandler`,
+  timeout: 900,
   events: [
     {
       http: {
@@ -36,6 +37,12 @@ export const dataLoader = {
         path: 'loader',
         cors: true
       },
+    },
+    {
+      eventBridge: {
+        enabled: true,
+        schedule: "rate(20 minutes)"
+      }
     }
   ]
 }

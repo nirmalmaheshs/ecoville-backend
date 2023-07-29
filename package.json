@@ -2,10 +2,10 @@
   "name": "hackerjob",
   "version": "1.0.0",
   "description": "Serverless aws-nodejs-typescript template",
-  "main": "ecoville.serverless.ts",
+  "main": "hacker-jobs.serverless.ts",
   "scripts": {
-    "ecoville": "serverless offline --stage dev --config ecoville.serverless.ts --noTimeout",
-    "deploy-ecoville:dev": "serverless deploy --stage dev --config ecoville.serverless.ts",
+    "hacker-jobs": "serverless offline --stage dev --config hacker-jobs.serverless.ts --noTimeout",
+    "hacker-jobs:dev": "serverless deploy --stage dev --config hacker-jobs.serverless.ts",
     "test": "jest"
   },
   "engines": {
