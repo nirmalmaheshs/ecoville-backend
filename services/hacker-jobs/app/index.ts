@@ -46,3 +46,57 @@ export const dataLoader = {
     }
   ]
 }
+
+
+
+export const submitResumeParseRequest = {
+  handler: `services/hacker-jobs/app/functions/submit-resume-parse-request/handler.resumeParserHandler`,
+  events: [
+    {
+      http: {
+        method: 'post',
+        path: 'resume/parse',
+        cors: true
+      },
+    }
+  ]
+}
+
+export const getResumeParseRequest = {
+  handler: `services/hacker-jobs/app/functions/get-resume-parse-request/handler.getResumeParseRequestHandler`,
+  events: [
+    {
+      http: {
+        method: 'get',
+        path: 'resume/parse',
+        cors: true
+      },
+    }
+  ]
+}
+
+export const s3PreSignUrlGenerator = {
+  handler: `services/hacker-jobs/app/functions/resume-parser-presign-url/handler.presignGeneratorHandler`,
+  events: [
+    {
+      http: {
+        method: 'get',
+        path: 'presign/s3',
+        cors: true
+      },
+    }
+  ]
+}
+
+export const signUp = {
+  handler: `services/hacker-jobs/app/functions/register/handler.registrationHandler`,
+  events: [
+    {
+      http: {
+        method: 'post',
+        path: 'user/singup',
+        cors: true
+      },
+    }
+  ]
+}

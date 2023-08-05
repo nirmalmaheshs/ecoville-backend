@@ -10,6 +10,7 @@ import {injectLambdaContext} from '@aws-lambda-powertools/logger';
 import {captureLambdaHandler} from '@aws-lambda-powertools/tracer';
 import {Logger} from "../libs/logger";
 import { tracer } from "../libs/tracer";
+import {dbManager} from "./dbManager";
 
 class HandlerWrapper {
   private _useJsonBodyParser = false;
@@ -27,6 +28,9 @@ class HandlerWrapper {
   private _sqsBodyParser = false;
   private _errorHandlerUse = true;
 
+  private _dbManagerUse = false;
+  private _dbManagerOpts;
+
   /**
    * Enable Json Body Parser middy middleware for the current lambda handler wrapper instance
    */
@@ -39,9 +43,25 @@ class HandlerWrapper {
   /**
    * Enable Secrets Manager middy middleware for the current lambda handler wrapper instance
    */
-  public secretsManager(opts: Parameters<typeof middySecretsManager>[0] = {}) {
+  public secretsManager(opts: {secretsName: string}) {
+    const ssmOpts = {
+      fetchData: {
+        dbCred: opts.secretsName,
+      },
+      awsClientOptions: {
+        region: process.env.REGION || 'us-east-1'
+      },
+      setToContext: true,
+      disablePrefetch: true
+    };
     this._useSecretsManager = true;
-    this._secretsManagerOpts = opts;
+    this._secretsManagerOpts = ssmOpts;
+    return this;
+  }
+
+  dbManager(opts = {}) {
+    this._dbManagerOpts = opts;
+    this._dbManagerUse = true;
     return this;
   }
 
@@ -89,6 +109,9 @@ class HandlerWrapper {
       _middy.use(middySecretsManager(this._secretsManagerOpts));
     }
 
+    if (this._dbManagerUse) {
+      _middy.use(dbManager(this._dbManagerOpts));
+    }
 
     if (this._errorHandlerUse) {
       _middy.use(customExceptionHandler());

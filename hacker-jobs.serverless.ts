@@ -1,19 +1,19 @@
-import type {AWS} from '@serverless/typescript';
+import type { AWS } from '@serverless/typescript';
 
-import {hello, getJobsHandler, dataLoader} from './services/hacker-jobs/app';
+import { hello, getJobsHandler, dataLoader, s3PreSignUrlGenerator, submitResumeParseRequest, getResumeParseRequest } from './services/hacker-jobs/app';
 type AWSCustom = AWS & {
     resources: AWS["resources"] | string[];
     provider: AWS["provider"] | (AWS["provider"] & AWS["provider"]["region"]);
 };
 const serverlessConfiguration: AWSCustom = {
-    service: 'hackerJob',
+    service: 'hacker-job',
     frameworkVersion: '3',
     plugins: [
         'serverless-esbuild',
         'serverless-deployment-bucket',
         'serverless-prune-plugin',
         'serverless-dotenv-plugin',
-        'serverless-offline'
+        'serverless-offline',
     ],
     useDotenv: true,
     provider: {
@@ -32,18 +32,21 @@ const serverlessConfiguration: AWSCustom = {
         },
         logs: {
             restApi: {
-                executionLogging: false,
+                executionLogging: true,
             },
         },
         environment: {
             AWS_NODEJS_CONNECTION_REUSE_ENABLED: '1',
             NODE_OPTIONS: '--enable-source-maps --stack-trace-limit=1000',
+            RESUME_BUCKET: { "Ref" : "ResumeBucket" },
+            USER_POOL_ID: { "Ref" : "UserPool" },
+            APP_CLIENT_ID: { "Ref" : "UserPoolClient"},
         },
         lambdaHashingVersion: '20201221',
     },
     // import the function via paths
-    functions: {hello,getJobsHandler, dataLoader},
-    package: {individually: true},
+    functions: { hello, getJobsHandler, dataLoader, s3PreSignUrlGenerator, submitResumeParseRequest, getResumeParseRequest },
+    package: { individually: true },
     custom: {
         prune: {
             automatic: true,
@@ -56,7 +59,7 @@ const serverlessConfiguration: AWSCustom = {
             sourcemap: true,
             exclude: ['aws-sdk'],
             target: 'node14',
-            define: {'require.resolve': undefined},
+            define: { 'require.resolve': undefined },
             platform: 'node',
             concurrency: 10,
         },
@@ -67,6 +70,8 @@ const serverlessConfiguration: AWSCustom = {
     resources: [
         "${file(./services/hacker-jobs/infra-assets/lambda-role.yml)}",
         "${file(./services/hacker-jobs/infra-assets/cognito.yml)}",
+        "${file(./services/hacker-jobs/infra-assets/secrets-manager.yml)}",
+        "${file(./services/hacker-jobs/infra-assets/s3.yml)}",
     ]
 };
 

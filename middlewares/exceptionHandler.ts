@@ -38,6 +38,17 @@ export default class Error {
   };
 }
 
+export class DbConnectionError extends Error {
+  constructor(opts: IErrorOptions = {}) {
+    super({
+      errorType: ERROR_TYPES.SYSTEM_EXCEPTION,
+      statusCode: HTTP_STATUS_CODES.SYSTEM_EXCEPTION,
+      errorCode: ERROR_CODES.SYSTEM_ERROR,
+      errorMessage: opts.errorMessage
+    })
+  }
+}
+
 export class ResourceNotFoundException extends Error {
   constructor(opts: IErrorOptions = {}) {
     super({
@@ -105,7 +116,7 @@ export const customExceptionHandler = () => {
     if (!isValidJsonString(request.error.error)) {
       console.log("Check Flag3 : ",request.error);
       // request.error.statusCode = request.error.statusCode;
-      request.error.message = JSON.stringify({message: request.error});
+      request.error.message = JSON.stringify({message: request.error.message});
     } else {
       console.log("Check Flag2 : ",request.error.message);
       const errorPayload = JSON.parse(request.error.message);
@@ -123,7 +134,7 @@ export const customExceptionHandler = () => {
         request.error.message = JSON.stringify(errorPayload);
       }
     }
-
+    // console.log("request.error: ", );
     const response = {
       body: request.error.message,
       statusCode: request.error.statusCode ? request.error.statusCode : 500,
@@ -131,7 +142,7 @@ export const customExceptionHandler = () => {
         "Content-Type": "application/json",
       },
     };
-    console.log("Request: ", JSON.stringify(request));
+    // console.log("Request: ", JSON.stringify(request));
     request.response = response;
     addErrorLogsForTracing(request);
   };

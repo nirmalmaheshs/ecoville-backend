@@ -227,4 +227,4 @@ async function getLatestRecordFromHackerNews() {
     return res.data;
 }
 
-export const dataLoaderHandler = new HandlerWrapper().jsonBodyParse().cors().get(lambdaHandler);
+export const dataLoaderHandler = new HandlerWrapper().jsonBodyParse().secretsManager({secretsName: `/${process.env.NODE_ENV}/${process.env.SERVICE}/database/credentials`}).cors().get(lambdaHandler);

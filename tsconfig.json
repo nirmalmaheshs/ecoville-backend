@@ -7,6 +7,7 @@
     "esModuleInterop": true,
     "noUnusedParameters": true,
     "allowSyntheticDefaultImports": true,
+    "experimentalDecorators": true,
     "removeComments": true,
     "sourceMap": true,
     "target": "ES2020",

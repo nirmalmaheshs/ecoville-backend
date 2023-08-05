@@ -1,0 +1,8 @@
+AWSTemplateFormatVersion: "2010-09-09"
+Description: The AWS CloudFormation template to create s3 resouces.
+
+Resources:
+  ResumeBucket:
+    Type: 'AWS::S3::Bucket'
+    Properties:
+      BucketName: ${self:service}-resume-upload-bucket-${env:NODE_ENV}
