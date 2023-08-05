@@ -97,10 +97,10 @@ export class Users extends Model<Users> {
     id: number;
 
     @Column(DataType.STRING)
-    firstName: string;
+    fullName: string;
 
     @Column(DataType.STRING)
-    lastName: string;
+    username: string;
 
     @Column(DataType.BOOLEAN)
     isActive: boolean;
@@ -152,4 +152,22 @@ export class UserResumes extends Model<UserResumes> {
 
     @Column(DataType.STRING)
     metaStatus: string;
+}
+
+
+@Table({ tableName: 'news_letters', timestamps: false })
+export class NewsLetters extends Model<NewsLetters> {
+
+    @PrimaryKey
+    @Column(DataType.INTEGER)
+    id: number;
+
+    @Column(DataType.INTEGER)
+    userId: number;
+
+    @Column(DataType.JSON)
+    config: object;
+
+    @Column(DataType.DATE)
+    createdAt: Date;
 }

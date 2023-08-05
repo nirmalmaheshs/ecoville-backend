@@ -89,6 +89,20 @@ export const getResumeMeta = {
 }
 
 
+export const submitNewsLetterRequest = {
+  handler: `services/hacker-jobs/app/functions/submit-newsletter-request/handler.submitNewsLetterRequestHandler`,
+  events: [
+    {
+      http: {
+        method: 'post',
+        path: 'newsletter',
+        cors: true
+      },
+    }
+  ]
+}
+
+
 export const s3PreSignUrlGenerator = {
   handler: `services/hacker-jobs/app/functions/resume-parser-presign-url/handler.presignGeneratorHandler`,
   events: [
