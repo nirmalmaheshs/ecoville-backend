@@ -75,6 +75,20 @@ export const getResumeParseRequest = {
   ]
 }
 
+export const getResumeMeta = {
+  handler: `services/hacker-jobs/app/functions/get-resume-meta-data/handler.getResumeMetaHandler`,
+  events: [
+    {
+      http: {
+        method: 'get',
+        path: 'resume/meta',
+        cors: true
+      },
+    }
+  ]
+}
+
+
 export const s3PreSignUrlGenerator = {
   handler: `services/hacker-jobs/app/functions/resume-parser-presign-url/handler.presignGeneratorHandler`,
   events: [

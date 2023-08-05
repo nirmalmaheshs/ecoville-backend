@@ -146,4 +146,10 @@ export class UserResumes extends Model<UserResumes> {
 
     @Column(DataType.TEXT)
     response_lines: string;
+
+    @Column(DataType.JSON)
+    meta: object;
+
+    @Column(DataType.STRING)
+    metaStatus: string;
 }

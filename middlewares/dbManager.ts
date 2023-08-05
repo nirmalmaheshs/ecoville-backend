@@ -47,10 +47,9 @@ class DbManagerInternal {
     public static getConnection(params: any = {}): Promise<{ connection: Sequelize }> {
         return new Promise(async (resolve, reject) => {
             try {
-                log.debug('dbManager. Get connections for: ', params.database);
+                log.debug('dbManager. Get connections');
                 let connection: Sequelize;
-                log.debug('dbManager. Getting writer connection for: ', params.database);
-                console.log(params.dbCreds);
+                log.debug('dbManager. Getting writer connection');
                 // TODO[maxyms]: check if db connection works with SSL to enable semgrep rule back
                 connection = new Sequelize({ // nosemgrep: javascript.sequelize.security.audit.sequelize-enforce-tls.sequelize-enforce-tls
                     database: params.dbCreds.database,

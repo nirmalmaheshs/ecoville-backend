@@ -32,7 +32,6 @@ const lambdaHandler = async (_event: APIGatewayEvent, _context): Promise<{ body:
     }
     const analyzeDoc = new StartDocumentAnalysisCommand(params);
     const response = await texTractClient.send(analyzeDoc);
-    await UserResumes.findAll();
     await UserResumes.create({
         path: `${process.env.RESUME_BUCKET_NAME}/${body.resumeId}`,
         jobId: response.JobId

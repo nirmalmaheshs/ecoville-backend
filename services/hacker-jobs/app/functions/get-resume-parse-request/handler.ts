@@ -24,12 +24,9 @@ const lambdaHandler = async (_event: APIGatewayEvent, _context): Promise<{ body:
             jobId: body.jobId
         }
     });
-    console.log("User Resumes");
-    console.log(userResume);
     let jobStatus = null;
     if (userResume) {
         if (userResume.status === 'SUCCEEDED') {
-            console.log("Check Check");
             jobStatus = {
                 jobId: body.jobId,
                 status: "SUCCEEDED"
@@ -65,6 +62,10 @@ const lambdaHandler = async (_event: APIGatewayEvent, _context): Promise<{ body:
                     jobId: body.jobId
                 }
             })
+            jobStatus = {
+                jobId: body.jobId,
+                status: "SUCCEEDED"
+            }
         }
     } else {
         throw new Error('No Job Found.');
