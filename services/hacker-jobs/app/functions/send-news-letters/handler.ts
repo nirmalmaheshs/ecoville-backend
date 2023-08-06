@@ -6,7 +6,7 @@ import {Sequelize} from "sequelize-typescript";
 import {Op} from "sequelize";
 import {JobMetaData, Jobs, NewsLetters, Users} from "../../../../../libs/dao/entities/hacker-news.model";
 import {SendEmailCommand, SESClient} from "@aws-sdk/client-ses";
-import { format } from 'date-fns';
+import { format } from "date-fns";
 
 const ses = new SESClient({region: "us-east-1"});
 const handlebars = require('handlebars');
@@ -17,7 +17,7 @@ const lambdaHandler = async (_event: APIGatewayEvent, _context): Promise<{ body:
     logger.info('Entering into <newsletter.lambdaHandler>');
     const _db: Sequelize = _context.dbConnection;
     _db.addModels([NewsLetters, Users, JobMetaData, Jobs]);
-    const newsLetterUsers = await NewsLetters.findAll({raw: true, nest: true});
+    const newsLetterUsers = await NewsLetters.findAll({raw: true, nest: true, where: {isActive: true}});
     for (const newsLetterUser of newsLetterUsers) {
         let res: any = {};
         const techStackFilters = [];
@@ -39,7 +39,7 @@ const lambdaHandler = async (_event: APIGatewayEvent, _context): Promise<{ body:
             nest: true
         });
         res.user = newsLetterUser;
-        console.log("Sending Email For User: ", res.user);
+        console.log("Sending Email For User: ", res);
         await sendEmail(res);
     }
 
@@ -387,7 +387,7 @@ img {
               <td class="px-12 sm:px-6 py-4 bg-white rounded text-left shadow-sm">
                 <p class="m-0 text-sm text-slate-500">
                   You are receiving this email because you signed up for Website Newsletter Weekly. You may
-                  <a href="<url>" class="text-indigo-700 [text-decoration:none] hover:![text-decoration:underline]">unsubscribe</a>
+                  <a href="https://00gb38rlgj.execute-api.us-east-1.amazonaws.com/dev/news/unsubscribe?token={{letterId}}" class="text-indigo-700 [text-decoration:none] hover:![text-decoration:underline]">unsubscribe</a>
                   at any time.
                 </p>
               </td>
@@ -420,11 +420,11 @@ img {
                 techStacks: job.techStacks.technologies.join(', '),
                 datePosted: formattedDate
             }
-        })
+        }),
+        letterId: data.user.letterId
     };
 
     const emailContent = compiledTemplate(context);
-
 
     const command = new SendEmailCommand({
         Destination: {
@@ -437,7 +437,7 @@ img {
 
             Subject: {Data: "Hacker Jobs - Express | Personalized | Weekly Newsletter"},
         },
-        Source: "indrapranesh2111@gmail.com",
+        Source: "HackerX <hackerx@hackerjobs.info>",
     });
     try {
         let response = await ses.send(command);

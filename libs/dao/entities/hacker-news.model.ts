@@ -166,8 +166,14 @@ export class NewsLetters extends Model<NewsLetters> {
     @Column(DataType.INTEGER)
     id: number;
 
+    @Column(DataType.STRING)
+    letterId: string;
+
     @Column(DataType.INTEGER)
     userId: number;
+
+    @Column(DataType.BOOLEAN)
+    isActive: boolean;
 
     @Column(DataType.JSON)
     config: any;

@@ -5,6 +5,7 @@ import {APIGatewayEvent} from "aws-lambda";
 import {NewsLetters, UserResumes, Users} from "../../../../../libs/dao/entities/hacker-news.model";
 import {Sequelize} from "sequelize-typescript";
 import {newsLetterRequest} from "./schema";
+const { v4: uuidv4 } = require('uuid');
 
 const logger = Logger.getInstance();
 const lambdaHandler = async (_event: APIGatewayEvent, _context): Promise<{ body: string; statusCode: number }> => {
@@ -53,6 +54,7 @@ const lambdaHandler = async (_event: APIGatewayEvent, _context): Promise<{ body:
         await NewsLetters.create({
             userId: user.id,
             config: body,
+            letterId: uuidv4()
         })
     }
     return formatJSONResponse({

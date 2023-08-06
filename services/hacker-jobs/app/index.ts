@@ -1,5 +1,3 @@
-import {newsLetterHandler} from "./functions/send-news-letters/handler";
-
 export const hello = {
   handler: `services/hacker-jobs/app/functions/hello-world/handler.helloHandler`,
   events: [
@@ -150,4 +148,18 @@ export const newsLetterProcessor = {
     }
   ]
 }
-newsLetterHandler
+
+
+export const newsLetterUnsubscribe = {
+  handler: `services/hacker-jobs/app/functions/news-letter-unsubscribe/handler.newsLetterUnsubscribeHandler`,
+  timeout: 30,
+  events: [
+    {
+      http: {
+        method: 'get',
+        path: 'news/unsubscribe',
+        cors: true
+      },
+    }
+  ]
+}
