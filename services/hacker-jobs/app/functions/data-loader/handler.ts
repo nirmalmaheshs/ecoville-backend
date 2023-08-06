@@ -17,11 +17,11 @@ const lambdaHandler = async (_event: APIGatewayEvent, _context): Promise<{ body:
     let data;
     let field;
     dbConnection = await mysql.createConnection({
-        host: process.env.DB_HOST,
-        port: Number(process.env.DB_PORT),
-        user: process.env.DB_USERNAME,
-        password: process.env.DB_PASSWORD,
-        database: process.env.DBNAME,
+        host: _context.dbCred.host,
+        port: _context.dbCred.port,
+        user: _context.dbCred.username,
+        password: _context.dbCred.password,
+        database: _context.dbCred.database,
         ssl: {
             minVersion: 'TLSv1.2',
             rejectUnauthorized: true
@@ -39,7 +39,7 @@ const lambdaHandler = async (_event: APIGatewayEvent, _context): Promise<{ body:
         const hiringPosts = await findHiringStory(chunk[0], chunk[chunk.length - 1]);
         if (hiringPosts.length) {
             for (const hiringPost of hiringPosts) {
-                await processHiringPost(hiringPost);
+                await processHiringPost(hiringPost, _context.dbCred.open_api_key, _context.dbCred);
             }
         } else {
             console.log("No Hiring Post Found...");
@@ -52,7 +52,7 @@ const lambdaHandler = async (_event: APIGatewayEvent, _context): Promise<{ body:
     });
 };
 
-async function processHiringPost(parentPost) {
+async function processHiringPost(parentPost, apiKey, dbCred) {
     console.log("Processing the hiring Post: ", parentPost);
     try {
         // const parentPost = await getItem(postId);
@@ -63,11 +63,11 @@ async function processHiringPost(parentPost) {
             console.log("Duplicate entry found. Ignoring the error");
         } else if (error.message.includes("connection is in closed")) {
             dbConnection = await mysql.createConnection({
-                host: process.env.DB_HOST,
-                port: Number(process.env.DB_PORT),
-                user: process.env.DB_USERNAME,
-                password: process.env.DB_PASSWORD,
-                database: process.env.DBNAME,
+                host: dbCred.host,
+                port: dbCred.port,
+                user: dbCred.username,
+                password: dbCred.password,
+                database: dbCred.database,
                 ssl: {
                     minVersion: 'TLSv1.2',
                     rejectUnauthorized: true
@@ -93,7 +93,7 @@ async function processHiringPost(parentPost) {
     for (const kid of kidsData) {
         try {
             await dbConnection.query("INSERT INTO hacker_jobs_analytics.jobs (id, parent_id, text, time, type, is_meta_extracktted, latest_error) VALUES (?, ?, ?, ?, ?, 0, null);", [kid.id, parentPost.id, kid.text, new Date(kid.time * 1000), kid.type])
-            const response = await getJobMetaData(kid.text);
+            const response = await getJobMetaData(kid.text, apiKey);
             await loadDataToMetaDataTable(kid, response, dbConnection);
         } catch (error) {
             if (error.message.includes("Duplicate entry")) {
@@ -101,11 +101,11 @@ async function processHiringPost(parentPost) {
                 console.log("Duplicate entry found found on meta data. Ignoring the error");
             } else if (error.message.includes("connection is in closed")) {
                 dbConnection = await mysql.createConnection({
-                    host: process.env.DB_HOST,
-                    port: Number(process.env.DB_PORT),
-                    user: process.env.DB_USERNAME,
-                    password: process.env.DB_PASSWORD,
-                    database: process.env.DBNAME,
+                    host: dbCred.host,
+                    port: dbCred.port,
+                    user: dbCred.username,
+                    password: dbCred.password,
+                    database: dbCred.database,
                     ssl: {
                         minVersion: 'TLSv1.2',
                         rejectUnauthorized: true

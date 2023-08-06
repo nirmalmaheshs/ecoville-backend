@@ -1,6 +1,6 @@
 const axios = require("axios");
 const defaultPrompt = 'Find the technical terms in the string and give me a json with keys- company, Techstack array, job title, location, job url. Use empty values when the required data is not present. just give the json and nothing else. JSON format { company: string, url: string, techStack: [], jobtitle: string, location: string }';
-export async function getJobMetaData(prompt) {
+export async function getJobMetaData(prompt, apiKey) {
     prompt = `${prompt} - ${defaultPrompt}`;
     function removePunctuationMarks(text) {
         return text.replace(/[!"#$%&'()*+,-./:;<=>?@[\\\]^_`{|}~]/g, '');
@@ -32,10 +32,7 @@ export async function getJobMetaData(prompt) {
         model: 'gpt-3.5-turbo',
         temperature: 0.8,
     };
-
     const apiUrl = 'https://api.openai.com/v1/chat/completions';
-    const apiKey = process.env.OPENAPI_APIKEY;
-
     const headers = {
         'Authorization': `Bearer ${apiKey}`,
         'Content-Type': 'application/json',

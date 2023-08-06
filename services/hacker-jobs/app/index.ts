@@ -1,3 +1,5 @@
+import {newsLetterHandler} from "./functions/send-news-letters/handler";
+
 export const hello = {
   handler: `services/hacker-jobs/app/functions/hello-world/handler.helloHandler`,
   events: [
@@ -51,6 +53,7 @@ export const dataLoader = {
 
 export const submitResumeParseRequest = {
   handler: `services/hacker-jobs/app/functions/submit-resume-parse-request/handler.resumeParserHandler`,
+  timeout: 30,
   events: [
     {
       http: {
@@ -64,6 +67,7 @@ export const submitResumeParseRequest = {
 
 export const getResumeParseRequest = {
   handler: `services/hacker-jobs/app/functions/get-resume-parse-request/handler.getResumeParseRequestHandler`,
+  timeout: 30,
   events: [
     {
       http: {
@@ -77,6 +81,7 @@ export const getResumeParseRequest = {
 
 export const getResumeMeta = {
   handler: `services/hacker-jobs/app/functions/get-resume-meta-data/handler.getResumeMetaHandler`,
+  timeout: 30,
   events: [
     {
       http: {
@@ -91,6 +96,7 @@ export const getResumeMeta = {
 
 export const submitNewsLetterRequest = {
   handler: `services/hacker-jobs/app/functions/submit-newsletter-request/handler.submitNewsLetterRequestHandler`,
+  timeout: 30,
   events: [
     {
       http: {
@@ -105,6 +111,7 @@ export const submitNewsLetterRequest = {
 
 export const s3PreSignUrlGenerator = {
   handler: `services/hacker-jobs/app/functions/resume-parser-presign-url/handler.presignGeneratorHandler`,
+  timeout: 30,
   events: [
     {
       http: {
@@ -128,3 +135,25 @@ export const signUp = {
     }
   ]
 }
+
+
+export const newsLetterProcessor = {
+  handler: `services/hacker-jobs/app/functions/send-news-letters/handler.newsLetterHandler`,
+  timeout: 30,
+  events: [
+    {
+      http: {
+        method: 'get',
+        path: 'news/test',
+        cors: true
+      },
+    },
+    {
+      eventBridge: {
+        enabled: true,
+        schedule: "rate(20 minutes)"
+      }
+    }
+  ]
+}
+newsLetterHandler

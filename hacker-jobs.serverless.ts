@@ -8,7 +8,8 @@ import {
     submitResumeParseRequest,
     getResumeParseRequest,
     getResumeMeta,
-    submitNewsLetterRequest
+    submitNewsLetterRequest,
+    newsLetterProcessor
 } from './services/hacker-jobs/app';
 type AWSCustom = AWS & {
     resources: AWS["resources"] | string[];
@@ -54,7 +55,7 @@ const serverlessConfiguration: AWSCustom = {
         lambdaHashingVersion: '20201221',
     },
     // import the function via paths
-    functions: { hello, getJobsHandler, dataLoader, s3PreSignUrlGenerator, submitResumeParseRequest, getResumeParseRequest, getResumeMeta, submitNewsLetterRequest },
+    functions: { hello, getJobsHandler, dataLoader, s3PreSignUrlGenerator, submitResumeParseRequest, getResumeParseRequest, getResumeMeta, submitNewsLetterRequest, newsLetterProcessor },
     package: { individually: true },
     custom: {
         prune: {
