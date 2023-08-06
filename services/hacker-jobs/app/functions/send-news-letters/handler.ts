@@ -17,7 +17,6 @@ const lambdaHandler = async (_event: APIGatewayEvent, _context): Promise<{ body:
     const _db: Sequelize = _context.dbConnection;
     _db.addModels([NewsLetters, Users, JobMetaData]);
     const newsLetterUsers = await NewsLetters.findAll({raw: true, nest: true});
-    let emailTemplate = '';
     for (const newsLetterUser of newsLetterUsers) {
         let res: any = {};
         const techStackFilters = [];
@@ -39,12 +38,12 @@ const lambdaHandler = async (_event: APIGatewayEvent, _context): Promise<{ body:
             nest: true
         });
         res.user = newsLetterUser;
-        console.log("User: ", res);
-        emailTemplate = await sendEmail(res);
+        console.log("Sending Email For User: ", res.user);
+        await sendEmail(res);
     }
 
     return formatJSONResponse({
-        data: emailTemplate,
+        data: "Email Processed Successfully",
     });
 };
 
@@ -92,7 +91,7 @@ const sendEmail = async (data) => {
     });
     try {
         let response = await ses.send(command);
-        console.log("response: ", response);
+        console.log("Email Response: ", response);
         return response;
     } catch (error) {
         console.log("Error: ", error);
