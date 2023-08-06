@@ -1,4 +1,4 @@
-import { Column, DataType, Model, Table, PrimaryKey } from "sequelize-typescript";
+import {Column, DataType, Model, Table, PrimaryKey, ForeignKey, BelongsTo} from "sequelize-typescript";
 
 @Table({ tableName: 'Jobs', timestamps: false })
 export class Jobs extends Model<Jobs> {
@@ -28,6 +28,7 @@ export class Jobs extends Model<Jobs> {
 export class JobMetaData extends Model<JobMetaData> {
 
     @PrimaryKey
+    @ForeignKey(() => Jobs)
     @Column(DataType.INTEGER)
     id: number;
 
@@ -45,6 +46,9 @@ export class JobMetaData extends Model<JobMetaData> {
 
     @Column(DataType.STRING)
     location: string;
+
+    @BelongsTo(() => Jobs, 'id')
+    job: Jobs;
 }
 
 @Table({ tableName: 'hacker_news_job_post', timestamps: false })

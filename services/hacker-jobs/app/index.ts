@@ -147,12 +147,6 @@ export const newsLetterProcessor = {
         path: 'news/test',
         cors: true
       },
-    },
-    {
-      eventBridge: {
-        enabled: true,
-        schedule: "rate(20 minutes)"
-      }
     }
   ]
 }
