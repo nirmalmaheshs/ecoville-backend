@@ -19,7 +19,7 @@ const lambdaHandler = async (_event: APIGatewayEvent, _context): Promise<{ body:
             username: body.email
         }
     });
-    console.log("USER 1: ", user.id);
+
     if (!user) {
         user = await Users.create({
             fullName: body.fullName,
