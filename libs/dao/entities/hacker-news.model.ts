@@ -166,7 +166,7 @@ export class NewsLetters extends Model<NewsLetters> {
     userId: number;
 
     @Column(DataType.JSON)
-    config: object;
+    config: any;
 
     @Column(DataType.DATE)
     createdAt: Date;
