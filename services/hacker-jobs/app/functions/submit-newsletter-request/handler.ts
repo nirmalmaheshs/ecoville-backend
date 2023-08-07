@@ -54,7 +54,8 @@ const lambdaHandler = async (_event: APIGatewayEvent, _context): Promise<{ body:
         await NewsLetters.create({
             userId: user.id,
             config: body,
-            letterId: uuidv4()
+            letterId: uuidv4(),
+            isActive: true,
         })
     }
     return formatJSONResponse({
